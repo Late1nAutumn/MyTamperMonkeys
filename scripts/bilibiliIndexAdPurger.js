@@ -16,17 +16,38 @@
     const indexCarouselClassName = "recommended-swipe grid-anchor";
     const adTagClassName = "bili-video-card__info--ad";
     const liveTagClassName = "living";
+    const promoteIconClassName = "bili-video-card__info--creative-ad";
     const cardClassName1 = "bili-video-card is-rcmd";
     const cardClassName2 = "feed-card";
     const cardClassName3 = "floor-single-card";
+
+    const findParentClass = (ele, className) => {
+        let node = ele.parentElement;
+        while(node && !node.className.includes(className)){
+            node = node.parentElement;
+        }
+        return node;
+    };
 
     const purgeAds = () => {
         let targets = document.getElementsByClassName(adTagClassName);
         for(let i=0; i<targets.length; i++){
             let ele = targets[i];
-            while(ele && !ele.className.includes(cardClassName1)){
-                ele = ele.parentElement;
+            ele = findParentClass(ele, cardClassName1);
+            if(!ele){
+                continue;
             }
+            if(ele.parentElement.className.includes(cardClassName2)){
+                ele.parentElement.remove();
+            }else{
+                ele.remove();
+            }
+        }
+
+        targets = document.getElementsByClassName(promoteIconClassName);
+        for(let i=0; i<targets.length; i++){
+            let ele = targets[i];
+            ele = findParentClass(ele, cardClassName1);
             if(!ele){
                 continue;
             }
@@ -40,9 +61,7 @@
         targets = document.getElementsByClassName(liveTagClassName);
         for(let i=0; i<targets.length; i++){
             let ele = targets[i];
-            while(ele && !ele.className.includes(cardClassName3)){
-                ele = ele.parentElement;
-            }
+            ele = findParentClass(ele, cardClassName3);
             if(!ele){
                 continue;
             }
