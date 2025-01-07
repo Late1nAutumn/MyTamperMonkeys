@@ -15,11 +15,14 @@
     // Your code here...
     const indexCarouselClassName = "recommended-swipe grid-anchor";
     const adTagClassName = "bili-video-card__info--ad";
-    const liveTagClassName = "living";
+    const liveTag1ClassName = "living";
+    const liveTag2ClassName = "bili-live-card__info--living__text";
+
     const promoteIconClassName = "bili-video-card__info--creative-ad";
     const cardClassName1 = "bili-video-card is-rcmd";
     const cardClassName2 = "feed-card";
     const cardClassName3 = "floor-single-card";
+    const cardClassName4 = "bili-live-card is-rcmd";
 
     const findParentClass = (ele, className) => {
         let node = ele.parentElement;
@@ -58,10 +61,20 @@
             }
         }
 
-        targets = document.getElementsByClassName(liveTagClassName);
+        targets = document.getElementsByClassName(liveTag1ClassName);
         for(let i=0; i<targets.length; i++){
             let ele = targets[i];
             ele = findParentClass(ele, cardClassName3);
+            if(!ele){
+                continue;
+            }
+            ele.remove();
+        }
+
+        targets = document.getElementsByClassName(liveTag2ClassName);
+        for(let i=0; i<targets.length; i++){
+            let ele = targets[i];
+            ele = findParentClass(ele, cardClassName4);
             if(!ele){
                 continue;
             }
