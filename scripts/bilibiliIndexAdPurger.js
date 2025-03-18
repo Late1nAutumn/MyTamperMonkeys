@@ -9,84 +9,89 @@
 // @grant        none
 // ==/UserScript==
 
-(function() {
-    'use strict';
+(function () {
+  "use strict";
 
-    // Your code here...
-    const indexCarouselClassName = "recommended-swipe grid-anchor";
-    const adTagClassName = "bili-video-card__info--ad";
-    const liveTag1ClassName = "living";
-    const liveTag2ClassName = "bili-live-card__info--living__text";
+  // Your code here...
+  const PURGE_CAROUSEL = true;
+  const PURGE_LIVE = true;
+  const PURGE_PROMOTION = true;
+  const PURGE_AD = true;
 
-    const promoteIconClassName = "bili-video-card__info--creative-ad";
-    const cardClassName1 = "bili-video-card is-rcmd";
-    const cardClassName2 = "feed-card";
-    const cardClassName3 = "floor-single-card";
-    const cardClassName4 = "bili-live-card is-rcmd";
+  // #region archive
+  // const adTagClassName = "bili-video-card__info--ad";
+  // const promoteIconClassName = "bili-video-card__info--creative-ad";
+  // #endregion
 
-    const findParentClass = (ele, className) => {
-        let node = ele.parentElement;
-        while(node && !node.className.includes(className)){
-            node = node.parentElement;
-        }
-        return node;
-    };
+  const indexCarouselClassName = "recommended-swipe grid-anchor";
+  const adTextWrapperClassName = "bili-video-card__stats--text";
+  const rocketIconSvgClassName = "vui_icon bili-video-card__stats--icon";
+  const liveTag1ClassName = "living";
+  const liveTag2ClassName = "bili-live-card__info--living__text";
 
-    const purgeAds = () => {
-        let targets = document.getElementsByClassName(adTagClassName);
-        for(let i=0; i<targets.length; i++){
-            let ele = targets[i];
-            ele = findParentClass(ele, cardClassName1);
-            if(!ele){
-                continue;
-            }
-            if(ele.parentElement.className.includes(cardClassName2)){
-                ele.parentElement.remove();
-            }else{
-                ele.remove();
-            }
-        }
+  const feedCardClassName = "feed-card";
+  const feedLiveCardClassName = "floor-single-card";
+  const sectionCardClassName = "bili-video-card is-rcmd";
+  const sectionLiveCardClassName = "bili-live-card is-rcmd";
 
-        targets = document.getElementsByClassName(promoteIconClassName);
-        for(let i=0; i<targets.length; i++){
-            let ele = targets[i];
-            ele = findParentClass(ele, cardClassName1);
-            if(!ele){
-                continue;
-            }
-            if(ele.parentElement.className.includes(cardClassName2)){
-                ele.parentElement.remove();
-            }else{
-                ele.remove();
-            }
-        }
-
-        targets = document.getElementsByClassName(liveTag1ClassName);
-        for(let i=0; i<targets.length; i++){
-            let ele = targets[i];
-            ele = findParentClass(ele, cardClassName3);
-            if(!ele){
-                continue;
-            }
-            ele.remove();
-        }
-
-        targets = document.getElementsByClassName(liveTag2ClassName);
-        for(let i=0; i<targets.length; i++){
-            let ele = targets[i];
-            ele = findParentClass(ele, cardClassName4);
-            if(!ele){
-                continue;
-            }
-            ele.remove();
-        }
-    };
-
-    window.onload = () => {
-        document.getElementsByClassName(indexCarouselClassName)[0].remove();
-        purgeAds();
-        setInterval(()=>{
-            purgeAds();
-        },3000);
+  const findParentClass = (ele, className) => {
+    let node = ele.parentElement;
+    while (node && !node.className.includes(className)) {
+      node = node.parentElement;
     }
+    return node;
+  };
+
+  const classPurger = (className, parentName, callback) => {
+    let targets = document.getElementsByClassName(className);
+    for (let i = 0; i < targets.length; i++) {
+      let ele = targets[i];
+      let parent = findParentClass(ele, parentName);
+      if (!parent) {
+        continue;
+      }
+      callback(parent, ele);
+    }
+  };
+
+  const purgeAds = () => {
+    if (PURGE_AD) {
+      classPurger(adTextWrapperClassName, feedCardClassName, (ele, target) => {
+        if (target.innerHTML === "广告") {
+          ele.remove();
+          console.log("[PURGER LOG]: an Ad has been purged");
+        }
+      });
+    }
+    if (PURGE_PROMOTION) {
+      classPurger(rocketIconSvgClassName, feedCardClassName, (ele) => {
+        ele.remove();
+        console.log("[PURGER LOG]: a promotion has been purged");
+    });
+      classPurger(rocketIconSvgClassName, sectionCardClassName, (ele) => {
+        ele.remove();
+        console.log("[PURGER LOG]: a promotion has been purged");
+    });
+    }
+    if (PURGE_LIVE) {
+      classPurger(liveTag1ClassName, feedLiveCardClassName, (ele) => {
+        ele.remove();
+        console.log("[PURGER LOG]: a live has been purged");
+    });
+      classPurger(liveTag2ClassName, sectionLiveCardClassName, (ele) => {
+        ele.remove();
+        console.log("[PURGER LOG]: a live has been purged");
+    });
+    }
+  };
+
+  window.onload = () => {
+    if (PURGE_CAROUSEL) {
+      document.getElementsByClassName(indexCarouselClassName)[0].remove();
+    }
+    purgeAds();
+    setInterval(() => {
+      purgeAds();
+    }, 3000);
+  };
 })();
