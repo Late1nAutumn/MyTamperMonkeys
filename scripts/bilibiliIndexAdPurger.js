@@ -62,26 +62,36 @@
           console.log("[PURGER LOG]: an Ad has been purged");
         }
       });
+      classPurger(
+        adTextWrapperClassName,
+        sectionCardClassName,
+        (ele, target) => {
+          if (target.innerHTML === "广告") {
+            ele.remove();
+            console.log("[PURGER LOG]: an Ad has been purged");
+          }
+        }
+      );
     }
     if (PURGE_PROMOTION) {
       classPurger(rocketIconSvgClassName, feedCardClassName, (ele) => {
         ele.remove();
         console.log("[PURGER LOG]: a promotion has been purged");
-    });
+      });
       classPurger(rocketIconSvgClassName, sectionCardClassName, (ele) => {
         ele.remove();
         console.log("[PURGER LOG]: a promotion has been purged");
-    });
+      });
     }
     if (PURGE_LIVE) {
       classPurger(liveTag1ClassName, feedLiveCardClassName, (ele) => {
         ele.remove();
         console.log("[PURGER LOG]: a live has been purged");
-    });
+      });
       classPurger(liveTag2ClassName, sectionLiveCardClassName, (ele) => {
         ele.remove();
         console.log("[PURGER LOG]: a live has been purged");
-    });
+      });
     }
   };
 
