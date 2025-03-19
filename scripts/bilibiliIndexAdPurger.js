@@ -17,12 +17,16 @@
   const PURGE_LIVE = true;
   const PURGE_PROMOTION = true;
   const PURGE_AD = true;
+  const PURGE_HEADER = true;
 
   // #region archive
   // const adTagClassName = "bili-video-card__info--ad";
   // const promoteIconClassName = "bili-video-card__info--creative-ad";
   // #endregion
 
+  const headerBarClassName = "bili-header__bar";
+  const headerBannerClassName = "bili-header__banner";
+  const headerNavbarClassName = "bili-header__channel";
   const indexCarouselClassName = "recommended-swipe grid-anchor";
   const adTextWrapperClassName = "bili-video-card__stats--text";
   const rocketIconSvgClassName = "vui_icon bili-video-card__stats--icon";
@@ -96,6 +100,11 @@
   };
 
   window.onload = () => {
+    if (PURGE_HEADER) {
+      document.getElementsByClassName(headerBarClassName)[0].style.background = "darkblue";
+      document.getElementsByClassName(headerBannerClassName)[0].remove();
+      document.getElementsByClassName(headerNavbarClassName)[0].style.opacity = 0;
+    }
     if (PURGE_CAROUSEL) {
       document.getElementsByClassName(indexCarouselClassName)[0].remove();
     }
