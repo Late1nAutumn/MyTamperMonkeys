@@ -13,6 +13,7 @@
   "use strict";
 
   // Your code here...
+  const PURGE_PERIOD_MS = 3000;
   const PURGE_CAROUSEL = true;
   const PURGE_LIVE = true;
   const PURGE_PROMOTION = true;
@@ -111,6 +112,6 @@
     purgeAds();
     setInterval(() => {
       purgeAds();
-    }, 3000);
+    }, PURGE_PERIOD_MS);
   };
 })();
