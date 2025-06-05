@@ -59,23 +59,47 @@
     }
   };
 
+  const queryPurger = (query, parentName, callback) => {
+    let targets = document.querySelectorAll(query);
+    for (let i = 0; i < targets.length; i++) {
+      let ele = targets[i];
+      let parent = findParentClass(ele, parentName);
+      if (!parent) {
+        continue;
+      }
+      callback(parent, ele);
+    }
+  };
+
+  const adHandler = (ele, target) => {
+    if (target.innerHTML === "广告") {
+      ele.remove();
+      console.log("[PURGER LOG]: an Ad has been purged");
+    }
+  }
+  const adBlockerRemainHandler =
+    (ele, target) => {
+      let text = getComputedStyle(target, '::before').getPropertyValue('content');
+      if (text.includes("AdGuard")) {
+        ele.remove();
+        console.log("[PURGER LOG]: an Adblocker remain has been purged");
+      }
+    }
+
   const purgeAds = () => {
     if (PURGE_AD) {
-      classPurger(adTextWrapperClassName, feedCardClassName, (ele, target) => {
-        if (target.innerHTML === "广告") {
-          ele.remove();
-          console.log("[PURGER LOG]: an Ad has been purged");
-        }
-      });
+      classPurger(adTextWrapperClassName, feedCardClassName, adHandler);
       classPurger(
         adTextWrapperClassName,
-        sectionCardClassName,
-        (ele, target) => {
-          if (target.innerHTML === "广告") {
-            ele.remove();
-            console.log("[PURGER LOG]: an Ad has been purged");
-          }
-        }
+        sectionCardClassName, adHandler
+      );
+      queryPurger(
+        `.${sectionCardClassName.split(" ").join(".")} > div`,
+        feedCardClassName, adBlockerRemainHandler
+      );
+      queryPurger(
+        `.${sectionCardClassName.split(" ").join(".")} > div`,
+        sectionCardClassName, adBlockerRemainHandler
       );
     }
     if (PURGE_PROMOTION) {
