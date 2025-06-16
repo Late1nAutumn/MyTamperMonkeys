@@ -28,7 +28,7 @@
   const headerBarClassName = "bili-header__bar";
   const headerBannerClassName = "bili-header__banner";
   const headerNavbarClassName = "bili-header__channel";
-  const indexCarouselClassName = "recommended-swipe grid-anchor";
+  const indexCarouselClassName = "recommended-swipe";
   const adTextWrapperClassName = "bili-video-card__stats--text";
   const rocketIconSvgClassName = "vui_icon bili-video-card__stats--icon";
   const liveTag1ClassName = "living";
@@ -41,7 +41,7 @@
 
   const findParentClass = (ele, className) => {
     let node = ele.parentElement;
-    while (node && !node.className.includes(className)) {
+    while (node && !node.classList.contains(className)) {
       node = node.parentElement;
     }
     return node;
@@ -88,11 +88,13 @@
 
   const purgeAds = () => {
     if (PURGE_AD) {
+      /*
       classPurger(adTextWrapperClassName, feedCardClassName, adHandler);
       classPurger(
         adTextWrapperClassName,
         sectionCardClassName, adHandler
       );
+      */
       queryPurger(
         `.${sectionCardClassName.split(" ").join(".")} > div`,
         feedCardClassName, adBlockerRemainHandler
@@ -122,6 +124,7 @@
         console.log("[PURGER LOG]: a live has been purged");
       });
     }
+    document.getElementsByClassName("adblock-tips")?.[0]?.children?.[1]?.click()
   };
 
   window.onload = () => {
