@@ -2,7 +2,7 @@
 // @name         steam free game claimer
 // @namespace    http://tampermonkey.net/
 // @version      2024-12-29
-// @description  try to take over the world!
+// @description  i am a hamster
 // @author       You
 // @match        https://store.steampowered.com/app/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
