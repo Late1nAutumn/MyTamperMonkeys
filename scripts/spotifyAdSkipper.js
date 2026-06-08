@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         New Userscript
+// @name         Spotify Ad Skipper
 // @namespace    http://tampermonkey.net/
 // @version      2026-06-08
 // @description  fuck these idiots
